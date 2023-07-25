@@ -8,25 +8,6 @@ const Modal = ({ selectedImageId, onClose }) => {
   const [alt, setAlt] = useState('');
   const selectedImageIdRef = React.useRef(selectedImageId);
 
-  useEffect(() => {
-    fetchLargeImage();
-    window.addEventListener('keydown', handleKeyPress);
-
-    return () => {
-      setLargeImageUrl('');
-      setAlt('');
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, [selectedImageId]);
-
-  useEffect(() => {
-    const prevSelectedImageId = selectedImageIdRef.current;
-    if (prevSelectedImageId !== selectedImageId) {
-      fetchLargeImage();
-    }
-    selectedImageIdRef.current = selectedImageId;
-  });
-
   const fetchLargeImage = async () => {
     try {
       const apiKey = '34699239-301f57fe1e87e868102635a18&';
@@ -49,11 +30,30 @@ const Modal = ({ selectedImageId, onClose }) => {
     }
   };
 
-  const handleKeyPress = event => {
-    if (event.key === 'Escape') {
-      onClose();
+  useEffect(() => {
+    const handleKeyPress = event => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    fetchLargeImage();
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      setLargeImageUrl('');
+      setAlt('');
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedImageId, onClose]);
+
+  useEffect(() => {
+    const prevSelectedImageId = selectedImageIdRef.current;
+    if (prevSelectedImageId !== selectedImageId) {
+      fetchLargeImage();
     }
-  };
+    selectedImageIdRef.current = selectedImageId;
+  });
 
   return (
     <div className={modal.overlay} onClick={onClose}>
