@@ -1,0 +1,16 @@
+.more {
+  width: 120px;
+  height: 30px;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  background-color: #d572fb;
+  margin-bottom: 50px;
+  cursor: pointer;
+  color: white;
+}
+
+.more:focus,
+.more:hover {
+  box-shadow: 0px 0px 10px rgb(161, 21, 208);
+}
